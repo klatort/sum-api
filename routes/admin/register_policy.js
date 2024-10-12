@@ -1,4 +1,3 @@
-
 const express = require("express");
 const checkReferrer = require("../../public/middleware/authenticate");
 
