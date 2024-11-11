@@ -5,13 +5,13 @@ const authenticate = require("../../middleware/authenticate");
 
 router.get(
   "/login", 
-  authenticate, 
+  authenticate.authenticate,
   authController.loginPage
 );
 
 router.post(
   "/login",
-  authenticate,
+  authenticate.authenticate,
   express.urlencoded({ extended: true }),
   authController.login
 );

@@ -1,6 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const db = require("./config/db_connect.js");
 
 const app = express();
 
@@ -10,8 +11,8 @@ app.use(bodyParser.json());
 
 // Routes
 app.use("/test", require("./tests/cursos"));
-app.use("/login", require("./routes/applications/login"));
-app.use("/register", require("./routes/applications/register"));
+app.use("/user", require("./routes/applications/login"));
+app.use("/user", require("./routes/applications/register"));
 //app.use("/admin", require("./routes/admin/register_policy"));
 
 // Error handling
