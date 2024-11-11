@@ -1,0 +1,11 @@
+const crypto = require("crypto");
+const bcrypt = require("bcrypt");
+
+async function generateAndHashApiKey() {
+    const apiKey = crypto.randomBytes(16).toString("hex");
+    const saltRounds = 10;
+    const hashedApiKey = await bcrypt.hash(apiKey, saltRounds);
+    return hashedApiKey;
+}
+
+module.exports = { generateAndHashApiKey };

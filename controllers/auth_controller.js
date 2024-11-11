@@ -1,11 +1,6 @@
-const express = require("express");
 const axios = require("axios");
-const bodyParser = require("body-parser");
 
-const router = express.Router();
-router.use(bodyParser.urlencoded({ extended: true }));
-
-router.get("/", (req, res) => {
+const loginPage = (req, res) => {
   res.send(`
     <html>
       <body>
@@ -19,27 +14,31 @@ router.get("/", (req, res) => {
       </body>
     </html>
   `);
-});
+};
 
-router.post("/", async (req, res) => {
+const login = async (req, res) => {
   console.log("Received login request from", req.ip);
 
   const request_body = {
     clave: req.body.password,
     usuario: req.body.user,
   };
-  
+
   try {
     const resp = await axios.post(
       "https://sumvirtual.unmsm.edu.pe/sumapi/loguearse",
       request_body
     );
     console.log(resp.data);
-    res.status(201).json(resp.data);
+    // Respond with a success message
+    res.send(`<p>Login successful!</p><p>Welcome, ${req.body.user}!</p>`);
   } catch (error) {
     console.log("Error in login", error);
-    res.status(401).json({ message: "Unexpected error has occurred!" });
+    // Respond with an error message
+    res
+      .status(401)
+      .send(`<p>Unexpected error has occurred!</p><p>${error}</p>`);
   }
-});
+};
 
-module.exports = router;
+module.exports = { loginPage, login };

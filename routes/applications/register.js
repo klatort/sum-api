@@ -1,8 +1,8 @@
 const express = require("express");
-const { validateStudent } = require("../../public/middleware/authenticate");
+const { validateStudent } = require("../../middleware/authenticate.js");
 const bcrypt = require("bcrypt");
 const { v4: uuidv4 } = require("uuid");
-const User = require("../../public/middleware/db_connect.js");
+const User = require("../../config/db_connect.js");
 const dotenv = require("dotenv");
 
 const router = express.Router();

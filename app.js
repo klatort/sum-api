@@ -10,8 +10,8 @@ app.use(bodyParser.json());
 
 // Routes
 app.use("/test", require("./tests/cursos"));
-app.use("/login", require("./routes/endpoints/login"));
-app.use("/register", require("./routes/endpoints/register"));
+app.use("/login", require("./routes/applications/login"));
+app.use("/register", require("./routes/applications/register"));
 //app.use("/admin", require("./routes/admin/register_policy"));
 
 // Error handling
