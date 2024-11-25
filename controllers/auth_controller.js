@@ -1,4 +1,6 @@
 const axios = require("axios");
+const cheerio = require("cheerio");
+const tough = require("tough-cookie");
 
 const loginPage = (req, res) => {
   res.send(`
@@ -17,27 +19,60 @@ const loginPage = (req, res) => {
 };
 
 const login = async (req, res) => {
-  console.log("Received login request from", req.ip);
-
-  const request_body = {
-    clave: req.body.password,
-    usuario: req.body.user,
-  };
-
+  const cookieJar = new tough.CookieJar();
+  const { user, password } = req.body;
   try {
-    const resp = await axios.post(
-      "https://sumvirtual.unmsm.edu.pe/sumapi/loguearse",
-      request_body
+    // First request to get the CSRF token
+    const response = await axios.get(
+      "https://sum.unmsm.edu.pe/alumnoWebSum/login",
+      {
+        jar: cookieJar,
+        withCredentials: true,
+      }
     );
-    console.log(resp.data);
-    // Respond with a success message
-    res.send(`<p>Login successful!</p><p>Welcome, ${req.body.user}!</p>`);
+    const $ = cheerio.load(response.data);
+    const csrfToken = $('input[name="_csrf"]').val();
+
+    const loginData = {
+      _csrf: csrfToken,
+      login: user,
+      clave: password,
+    };
+    const config = {
+      jar: cookieJar,
+      withCredentials: true,
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    };
+
+    // Second request to login and get the session cookie
+    const resp = await axios.post(
+      "https://sum.unmsm.edu.pe/alumnoWebSum/login",
+      loginData,
+      config
+    );
+
+    // If the user is already logged in, the session is restarted
+    if (
+      resp.request.res.responseUrl ===
+      "https://sum.unmsm.edu.pe/alumnoWebSum/sesionIniciada"
+    ) {
+      await axios.get(
+        `https://sum.unmsm.edu.pe/alumnoWebSum/reiniciarSesion?us=${loginData.login}`,
+        config
+      );
+    }
+
+    // Extract session token from cookies
+    const cookies = cookieJar.getCookiesSync(
+      "https://sum.unmsm.edu.pe/alumnoWebSum"
+    );
+
+    res.status(200).json({ cookies });
   } catch (error) {
-    console.log("Error in login", error);
-    // Respond with an error message
-    res
-      .status(401)
-      .send(`<p>Unexpected error has occurred!</p><p>${error}</p>`);
+    console.error("Error in getSessionToken", error);
+    res.status(500).json({ message: "Failed to get session token" });
   }
 };
 

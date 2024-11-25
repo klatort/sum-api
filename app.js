@@ -13,6 +13,7 @@ app.use(bodyParser.json());
 app.use("/test", require("./tests/cursos"));
 app.use("/user", require("./routes/applications/login"));
 app.use("/user", require("./routes/applications/register"));
+app.use("/user", require("./routes/applications/operations/cursos"));
 //app.use("/admin", require("./routes/admin/register_policy"));
 
 // Error handling

@@ -26,9 +26,7 @@ process_data = (data) => {
   }));
 };
 
-
 router.post("/cursos", async (req, res) => {
-  console.log("Received login request from", req.ip);
   // First request to get the csrf token
   try {
     const response = await axios.get(
@@ -46,7 +44,6 @@ router.post("/cursos", async (req, res) => {
       login: req.body.user,
       clave: req.body.password,
     };
-    console.log("Login data", req);
     const config = {
       jar: cookieJar,
       withCredentials: true,
@@ -54,6 +51,8 @@ router.post("/cursos", async (req, res) => {
         "Content-Type": "application/x-www-form-urlencoded",
       },
     };
+
+    console.log("Login data", config.jar);
 
     // Second request to login and get the session cookie
     try {
@@ -86,9 +85,7 @@ router.post("/cursos", async (req, res) => {
           "https://sum.unmsm.edu.pe/alumnoWebSum/v2/reportes/matricula?accion=obtenerAlumnoMatricula",
           config
         );
-        console.log(courses_dirty.data);
         const courses = process_data(courses_dirty.data);
-        console.log("Gave a response! to", req.ip, courses);
         res.json({ courses: courses });
       } catch (error) {
         console.log("Error in reiniciarSesion ewe", error);
