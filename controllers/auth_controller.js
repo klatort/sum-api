@@ -3,19 +3,8 @@ const cheerio = require("cheerio");
 const tough = require("tough-cookie");
 
 const loginPage = (req, res) => {
-  res.send(`
-    <html>
-      <body>
-        <form action="/login" method="post">
-          <label for="user">User:</label><br>
-          <input type="text" id="user" name="user" required><br>
-          <label for="password">Password:</label><br>
-          <input type="password" id="password" name="password" required><br><br>
-          <input type="submit" value="Login">
-        </form>
-      </body>
-    </html>
-  `);
+  console.log("Login page", req.ip);
+  res.status(200).render("form");
 };
 
 const login = async (req, res) => {
@@ -68,8 +57,10 @@ const login = async (req, res) => {
     const cookies = cookieJar.getCookiesSync(
       "https://sum.unmsm.edu.pe/alumnoWebSum"
     );
-
-    res.status(200).json({ cookies });
+    cookies.forEach(cookie => {
+      res.cookie(cookie.key, cookie.value, { httpOnly: true, secure: true });
+    });
+    res.status(200).json({ message: "Login successful" });
   } catch (error) {
     console.error("Error in getSessionToken", error);
     res.status(500).json({ message: "Failed to get session token" });

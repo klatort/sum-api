@@ -5,8 +5,17 @@ const db = require("./config/db_connect.js");
 
 const app = express();
 
+app.set("view engine", "ejs");
+
 // Middleware
-app.use(cors());
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      callback(null, origin); // Allow all origins
+    },
+    credentials: true, // Allow credentials (cookies, authorization headers, etc.)
+  })
+);
 app.use(bodyParser.json());
 
 // Routes
@@ -18,14 +27,13 @@ app.use("/user", require("./routes/applications/operations/cursos"));
 
 // Error handling
 app.use((err, req, res, next) => {
-  res.status(err.status || 500);
-  res.json({ error: err.message });
+  res.status(err.status || 500).json({ message: err.message });
 });
 
-const port = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000;
 
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
 
 module.exports = app;
