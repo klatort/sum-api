@@ -42,6 +42,14 @@ const login = async (req, res) => {
       config
     );
 
+    // If the response URL is the login page, it means the credentials are incorrect
+    if (
+      resp.request.res.responseUrl ===
+      "https://sum.unmsm.edu.pe/alumnoWebSum/login"
+    ) {
+      return res.status(401).json({ message: "Invalid credentials" });
+    }
+
     // If the user is already logged in, the session is restarted
     if (
       resp.request.res.responseUrl ===
