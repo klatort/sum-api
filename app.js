@@ -31,8 +31,9 @@ app.use((err, req, res, next) => {
 });
 
 const PORT = process.env.PORT || 3000;
+const HOST = 'localhost' // Only listen to requests from localhost to expose via reverse proxy for security reasons
 
-app.listen(PORT, () => {
+app.listen(PORT, HOST,  () => {
   console.log(`Server is running on port ${PORT}`);
 });
 
