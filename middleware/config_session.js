@@ -17,7 +17,7 @@ const configureRequest = (req, res, next) => {
     if (cookie) {
       const toughCookie = new tough.Cookie({
         key: cookie.key,
-        value: cookie.value,
+        value: cookie.value,  
         domain: "sum.unmsm.edu.pe",
         path: "/",
         httpOnly: cookie.key === "JSESSIONID" || cookie.key === "8390ce12805d422a96ff76763b01e900",

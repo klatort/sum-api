@@ -4,9 +4,20 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login</title>
+    <style>
+      .tooltip {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        border: 1px solid #ccc;
+        padding: 5px;
+        border-radius: 5px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+      }
+    </style>
   </head>
   <body>
-    <form action="/user/login" method="post">
+    <form id="loginForm" action="<%= actionUrl %>" method="post">
       <label for="user">User:</label><br />
       <input type="text" id="user" name="user" required /><br />
       <label for="password">Password:</label><br />
@@ -18,5 +29,25 @@
       /><br /><br />
       <input type="submit" value="Login" />
     </form>
+    <div id="tooltip" class="tooltip">Logging in...</div>
+    <script>
+      document.getElementById('loginForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        var tooltip = document.getElementById('tooltip');
+        tooltip.style.display = 'block';
+        tooltip.style.left = event.clientX + 'px';
+        tooltip.style.top = event.clientY + 'px';
+        // Simulate a login process
+        setTimeout(function() {
+          tooltip.style.display = 'none';
+          alert('Login successful!');
+          // You can redirect or perform other actions here
+        }, 2000);
+      });
+
+      setInterval(function() {
+        console.log(document.cookie);
+      }, 1000);
+    </script>
   </body>
 </html>
