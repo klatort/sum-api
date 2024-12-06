@@ -66,7 +66,7 @@ const login = async (req, res) => {
       "https://sum.unmsm.edu.pe/alumnoWebSum"
     );
     cookies.forEach(cookie => {
-      res.cookie(cookie.key, cookie.value, { httpOnly: true, secure: true });
+      res.cookie(cookie.key, cookie.value, { httpOnly: true, secure: true, sameSite: 'None' });
     });
     res.status(200).json({ message: "Login successful" });
   } catch (error) {
