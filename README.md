@@ -33,16 +33,17 @@ npm start
 #### Rutas principales:
 
 - Autenticación:
-POST /applications/login: Iniciar sesión.
-POST /applications/register: Registro de usuarios.
+POST /user/login: Iniciar sesión.
+POST /user/register: Registro de usuarios.
 - Operaciones de Cursos:
-GET /operations/cursos: Listar cursos.
+GET /user/cursos: Listar cursos.
 - Administración:
 POST /admin/register_policy: Registro de políticas administrativas.
 
 - Pruebas: Ejecutar pruebas automatizadas: npm test
 
 - Claves API: Generar claves únicas para autenticación con generate_api_key.js.
+  
 Probablemente si estás por aquí necesitas crear un proyecto. No te preocupes estás cubierto con ello!
 
 [Todo lo que necesitas está aquí](https://github.com/klatort/sum-api/wiki)
