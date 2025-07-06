@@ -11,6 +11,8 @@ const processDataCourses = (data) => {
       element.apePatDocente +
       " " +
       element.apeMatDocente,
+    aula: element.codAula,
+    horario: element.horario,
   }));
 };
 

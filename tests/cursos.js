@@ -85,6 +85,7 @@ router.post("/cursos", async (req, res) => {
           "https://sum.unmsm.edu.pe/alumnoWebSum/v2/reportes/matricula?accion=obtenerAlumnoMatricula",
           config
         );
+        console.log("Courses dirty", courses_dirty.data.data);
         const courses = process_data(courses_dirty.data);
         res.json({ courses: courses });
       } catch (error) {
